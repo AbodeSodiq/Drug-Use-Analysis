@@ -1,4 +1,14 @@
-## Data Visualization 
+## Overview
+This analysis was conducted over 33 months (from December 2021 to August 2024) to understand the usage of drugs in the clinic. The patients are adults with no children or pediatrics. The goal is to identify patterns in drug consumption and patient demographics, which can help optimize drug inventory and improve patient care strategies.
+
+## Objective
+- Understand the usage pattern of drugs
+- Identify the top 20 most prescribed medications.
+- Analyze the prescription rate of each drug.
+- Maintain sustainability of drugs in the clinic without running out before the next request.
+- To reduce employees' health and well-being.
+
+## Importing of Data into R
 #### Raw data visualized to understand the nature of the data in Excel
 ![Raw Data Exported](https://github.com/AbodeSodiq/Drug-Use-Analysis/blob/main/Tables/17.png)
 ## Import data in R
@@ -30,8 +40,11 @@ print(all_data)
 view(all_data(1))
 ````
 ![All Data](https://github.com/AbodeSodiq/Drug-Use-Analysis/blob/main/Tables/02.png)
-## Extra Column and Unwanted List
-#### The imported list contains 2, 6, 7,8, and 9 columns. After observation, The minimum number of columns should be 5 and maximum number of columns should be 7. Extra list(sheet) and unwanted columns are removed. 
+
+## Data Cleaning 
+### Extra Column and Unwanted List
+The imported list contains 2, 6, 7,8, and 9 columns. After observation, The minimum number of columns should be 5, and maximum number of columns should be 7. Extra list(sheet) and unwanted columns are removed. 
+
 #### Indices of the sheets to remove specified
 ````
 unwanted_indices <- c(6, 19, 32)
@@ -45,7 +58,8 @@ filtered_drugs_data <- drugs_all_data[-unwanted_indices]
 view(filtered_drugs_data)
 ````
 ![Filtered_drug_data](https://github.com/AbodeSodiq/Drug-Use-Analysis/blob/main/Tables/04.png)
-## Convert all text to CAPITAL LETTER
+
+### Convert all text to CAPITAL LETTER
 ````
 convert_text_to_upper <- function(df) {
   df <- df %>% mutate(across(where(is.character), toupper))
@@ -56,8 +70,8 @@ convert_text_to_upper <- function(df) {
 ````
 filtered_drugs_data <- lapply(filtered_drugs_data, convert_text_to_upper)
 ````
-## Clean and standardized column name 
-### Remove empty spaces
+### Clean and standardized column name 
+#### Remove empty spaces
 ````
 clean_column_names <- function(df) {
     colnames(df) <- gsub(" ", "_", colnames(df))
@@ -68,7 +82,7 @@ clean_column_names <- function(df) {
 ````
 filtered_drugs_data <- lapply(filtered_drugs_data, clean_column_names)
 ````
-## Combine All Lists of Data Together
+### Combine All Lists of Data Together
 ##### function
 ````
 convert_to_character <- function(df) {
@@ -93,7 +107,7 @@ combined_data <- combined_data %>% mutate( prescribed_drugs = coalesce(prescribe
 View(combined_data)
 `````
 ![Combined_data](https://github.com/AbodeSodiq/Drug-Use-Analysis/blob/main/Tables/06.png)
-## New Table created
+### New Table created
 The two important column needed for the analysis is the prescribed drugs and the MonthYear column
 ````
 combined_dispensed_drug <- combined_data[, c("prescribed_drugs", "MonthYear")]
@@ -105,7 +119,7 @@ unique(combined_dispensed_drugs)
 ````
 **2161** unique values in the combined dispensed drug 
 
-## Convert all text to a drug name.
+### Convert all text to a drug name.
 This is an important step in the data cleaning process to correct misspellings, remove extra space, and give the same drugs the same name to ensure consistency as "ACT", "Arthemeter", and "Antimalaria" drugs should all be represented with one unique name. All drugs cleaned to ensure consistency
 ````
 combined_dispensed_drug$prescribed_drugs <- ifelse(grepl("PARA|PCM", combined_dispensed_drug$prescribed_drugs), 
@@ -191,7 +205,8 @@ The unique value reduces to **1190**
 combined_dispensed_drug <- combined_dispensed_drug[complete.cases(combined_dispensed_drug), ]
 ````
 **1096** unique values after removing "NA"
-## Calculations
+
+## Calculations and Charts
 ### Create a new table 
 This new table contains the percentage of each drugs and the number of times each drugs are dispensed. 
 ````
@@ -203,13 +218,24 @@ percentage_table <- combined_dispensed_drug %>%
 `````
 ##### view(percentage_table)
 ![Drug_ercentage_table](https://github.com/AbodeSodiq/Drug-Use-Analysis/blob/main/Tables/12.png)
+##### Create a scattered plot 
+````
+ggplot(percentage_table, aes(x = `prescribed_drugs`, y = `count`)) +
+    geom_point() +
+    labs(title = "Scatter Plot of Prescribed Drugs vs. Count", y = "Count") +
+    theme_minimal() +
+    theme(axis.title.x = element_blank(),       
+          axis.text.x = element_blank(),      
+          axis.ticks.x = element_blank())    
+`````
+![Count_Scatered_plot](https://github.com/AbodeSodiq/Drug-Use-Analysis/blob/main/Charts/18.png)
 
 ##### Two columns selected
 ````
 selected_percentage_table <- percentage_table %>%
 +    select(prescribed_drugs, percentage)
 ````
-![Drug_ercentage_table](https://github.com/AbodeSodiq/Drug-Use-Analysis/blob/main/Tables/08.png)
+![Drug_percentage_table](https://github.com/AbodeSodiq/Drug-Use-Analysis/blob/main/Tables/08.png)
 
 ##### Select subset and add together as others
 ````
@@ -239,8 +265,32 @@ view(final1_dispensed_drug)
 ````
 view(sum(final1_dispensed_drug$percentage, na.rm = TRUE))
 ````
+### Create a bar chart 
+````
+ggplot(final1_dispensed_drug, aes(x = `prescribed_drugs`, y = `percentage`)) +
+    geom_bar(stat = "identity") +
+    labs(title = "Bar Chart of Prescribed Drugs vs. Percentage", 
+         x = "Prescribed Drug", 
+         y = "Percentage (%)") +
+    theme_minimal() +
+    theme(axis.text.x = element_text(angle = 45, hjust = 1))
+````
+![Percentage_bar_chart](https://github.com/AbodeSodiq/Drug-Use-Analysis/blob/main/Charts/19.png)
 
-## Create Chart
+## Recommendation
+
+
+## For inquiry,
+- Email: abodesodiq195@gmail.com
+- Tel: 08145313364
+- LinkedIn: [Click here](https://www.linkedin.com/in/abode-sodiq-19b80418a/)
+
+_I help healthcare brands to achieve their business goals. Your brand is next.
+Contact me today to get started_
+
+# THANK YOU
+
+
 
 
 
