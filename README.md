@@ -6,7 +6,7 @@ This analysis was conducted over 33 months (from December 2021 to August 2024) t
 - Identify the top 20 most prescribed medications.
 - Analyze the prescription rate of each drug.
 - Maintain sustainability of drugs in the clinic without running out before the next request.
-- To reduce employees' health and well-being.
+- To improve employees' health and well-being.
 
 ## Importing of Data into R
 #### Raw data visualized to understand the nature of the data in Excel
@@ -277,8 +277,29 @@ ggplot(final1_dispensed_drug, aes(x = `prescribed_drugs`, y = `percentage`)) +
 ````
 ![Percentage_bar_chart](https://github.com/AbodeSodiq/Drug-Use-Analysis/blob/main/Charts/19.png)
 
-## Recommendation
+## Conclusions
+- PCM (Paracetamol) and Ibuprofen, accounting for a combined 41.11%, dominate the prescription landscape, indicating a strong preference for pain management drugs.
+- Antimalarials (ACT and others), despite being crucial in regions affected by malaria, only make up 9.31% of total prescriptions.
+- A significant disparity exists between the top 10 most prescribed drugs and the remaining 160, suggesting heavy reliance on a small subset of medications.
+- The "Others" category represents 150 drugs that collectively make up a very small fraction (0.06% per drug) of the total, showing a lack of diversity in prescriptions.
+- Amoxicillin, important antibiotics, appear less frequently than expected, indicating either appropriate use of antibiotics or underdiagnosis of bacterial infections.
+- Drugs such as Folic Acid and Vitamin C are prescribed at low rates, suggesting minimal focus on preventive treatments and supplementation.
+Cough syrups and antacids (e.g., Omeprazole) have lower prescription rates, possibly reflecting a low incidence of respiratory or gastrointestinal conditions.
+- The high prescription rate for Metronidazole suggests a notable incidence of gastrointestinal infections and conditions requiring this antibiotic.
+- Anti-allergy drugs like Loratadine have low prescription rates, indicating either fewer allergy cases or potential underreporting.
+- "Other drugs" represent the vast majority of the drug list but are prescribed at a much lower frequency, raising questions about stock management or underuse.
 
+## Recommendations
+- Monitor the high usage of pain relievers, particularly PCM and Ibuprofen, to ensure they are not overprescribed, potentially leading to dependency or side effects.
+- Evaluate the need for more balanced drug prescriptions by exploring the underuse of the remaining 150+ drugs, which may help diversify treatment options for patients.
+- Focus on increasing awareness of antimalarials in regions where malaria is prevalent, ensuring these drugs are readily available and prescribed appropriately.
+- Encourage preventive care by promoting the prescription of multivitamins like Vitamin C and Folic Acid, especially in populations at risk of malnutrition or deficiency.
+- Optimize stock and availability of the top 20 drugs to prevent shortages, while considering reducing excessive reliance on them.
+- Promote antibiotic stewardship, particularly for drugs like Amoxicillin, to prevent the development of drug resistance due to overuse.
+- Reassess the low use of antacids and cough syrups to ensure that conditions requiring these medications are appropriately diagnosed and treated.
+- Investigate the low prescription rate of "Other drugs" to ensure they are still needed, possibly adjusting the inventory based on real patient needs.
+- Promote allergy awareness and treatment options, including increasing the use of antihistamines like Loratadine in cases where allergies are underdiagnosed.
+- Review the clinical guidelines and prescribing habits to identify areas where lesser-prescribed medications can play a role in improving patient outcomes.
 
 ## For inquiry,
 - Email: abodesodiq195@gmail.com
