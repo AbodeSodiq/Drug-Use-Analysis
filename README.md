@@ -1,5 +1,5 @@
 ## Overview
-This analysis was conducted over 33 months (from December 2021 to August 2024) to understand the usage of drugs in the clinic. The patients are adults with no children or pediatrics. The goal is to identify patterns in drug consumption and patient demographics, which can help optimize drug inventory and improve patient care strategies.
+This analysis was conducted over 33 months to understand drug usage in the clinic. The patients are adults, with no children or pediatrics. The goal is to identify patterns in drug consumption and patient demographics, which can help optimize drug inventory and improve patient care strategies.
 
 ## Objective
 - Understand the usage pattern of drugs
@@ -20,7 +20,7 @@ library(dplyr)
 ````
 file_path <- "clinic_dispensed_drug.xlsx"
 ````
-#### To import all data
+#### Import all data
 ````
 sheets <- excel_sheets(file_path)
 
@@ -35,7 +35,7 @@ all_data <- lapply(sheets, function(sheet) {
 print(all_data)
 ````
 ![All Data](https://github.com/AbodeSodiq/Drug-Use-Analysis/blob/main/Tables/01.png)
-#### All data contain a group of data from 1 to 40. Each group contains data from the Excel file for each sheet. The previously run code was used to create a  new column in each sheet that contains the sheet name. With this trick, each row contains the month name in the last column. 
+#### All data contain a list of data from 1 to 40. Each list contains data from the Excel file for each sheet. The previously run code was used to create a  new column in each sheet that contains the sheet name. Each row contains the month name in the last column with this code. 
 ````
 view(all_data(1))
 ````
@@ -43,7 +43,7 @@ view(all_data(1))
 
 ## Data Cleaning 
 ### Extra Column and Unwanted List
-The imported list contains 2, 6, 7,8, and 9 columns. After observation, The minimum number of columns should be 5, and maximum number of columns should be 7. Extra list(sheet) and unwanted columns are removed. 
+The imported list contains a different number of columns which are 2, 6, 7,8, and 9 columns. After observation, The minimum number of columns should be 5, and maximum number of columns should be 7. Extra list(sheet) and unwanted columns are removed. 
 
 #### Indices of the sheets to remove specified
 ````
@@ -99,7 +99,7 @@ filtered_drugs_data <- lapply(filtered_drugs_data, convert_to_character)
 combined_data <- bind_rows(filtered_drugs_data_char)
 ````
 ### Merge column
-A new column was created due to inconsistencies in column names such as prescribed drugs, v, patient name, prescribe drug, name
+After combining all lists of data into one, it was observed that some new columns was created due to inconsistencies in column names such as prescribed drugs, v, patient name, prescribe drug, name
 ````
 combined_data <- combined_data %>% mutate( prescribed_drugs = coalesce(prescribed_drugs, prescribed_drug) ) %>% select(-prescribed_drug)
 ````
@@ -108,24 +108,27 @@ View(combined_data)
 `````
 ![Combined_data](https://github.com/AbodeSodiq/Drug-Use-Analysis/blob/main/Tables/06.png)
 ### New Table created
-The two important column needed for the analysis is the prescribed drugs and the MonthYear column
+The two important columns needed for the analysis are the prescribed drugs and the MonthYear column
 ````
 combined_dispensed_drug <- combined_data[, c("prescribed_drugs", "MonthYear")]
 ````
 ![Combined_data](https://github.com/AbodeSodiq/Drug-Use-Analysis/blob/main/Tables/07.png)
-### CHeck unique values 
+### Check unique values 
+Unique values in the dispensed drugs list were observed to identify errors or inconsistencies. 
 ````
 unique(combined_dispensed_drugs)
 ````
-**2161** unique values in the combined dispensed drug 
+**2161** Unique values in the combined dispensed drug were identified. It was observed that some drugs a represented with different names, presence of extra space, unnecessary figures etc
 
 ### Convert all text to a drug name.
-This is an important step in the data cleaning process to correct misspellings, remove extra space, and give the same drugs the same name to ensure consistency as "ACT", "Arthemeter", and "Antimalaria" drugs should all be represented with one unique name. All drugs cleaned to ensure consistency
+This is an important step in the data cleaning process to correct misspellings, remove extra space, and give the same drugs the same name to ensure consistency. For example, "ACT", "Arthemeter", and "Antimalaria" drugs should all be represented with one unique name. 
 ````
 combined_dispensed_drug$prescribed_drugs <- ifelse(grepl("PARA|PCM", combined_dispensed_drug$prescribed_drugs), 
 +"PCM", 
 +combined_dispensed_drug$prescribed_drugs)
 ````
+Drugs cleaned to ensure consistency
+
 #### Removed any word that contains TAB, CAP, 5,3,2
 ````
 combined_dispensed_drug$prescribed_drugs <- gsub("\\b\\w*(TAB|CAP|5|2)\\w*\\b", "", combined_dispensed_drug$prescribed_drugs)
@@ -237,7 +240,7 @@ selected_percentage_table <- percentage_table %>%
 ````
 ![Drug_percentage_table](https://github.com/AbodeSodiq/Drug-Use-Analysis/blob/main/Tables/08.png)
 
-##### Select subset and add together as others
+##### Select a subset and add together as others
 ````
 percentage_subset <- selected_percentage_table$percentage[20:nrow(selected_percentage_table)]
 > Others <- sum(percentage_subset, na.rm = TRUE)
@@ -306,8 +309,8 @@ Cough syrups and antacids (e.g., Omeprazole) have lower prescription rates, poss
 - Tel: 08145313364
 - LinkedIn: [Click here](https://www.linkedin.com/in/abode-sodiq-19b80418a/)
 
-_I help healthcare brands to achieve their business goals. Your brand is next.
-Contact me today to get started_
+_I help healthcare brands & healthcare professionals to achieve their goals. Either to gain visibility, build trust, or increase income, I have helped over 150+ to achieve this. Your brand is next.
+**Contact me today to get started**_
 
 # THANK YOU
 
